@@ -1,0 +1,62 @@
+extensions:
+  basicauth/server:
+    htpasswd:
+      inline: |
+        ${env:BASIC_AUTH_USERPASS}
+#    htpasswd: 
+#      inline: |
+#        ${env:BASIC_AUTH_USER}:${env:BASIC_AUTH_PASSWORD}
+  
+  basicauth/grafana_cloud:
+    client_auth:   
+      username: "${env:OTLP_GRAF_USR}"
+      password: ${env:OTLP_GRAF_TOK}
+
+receivers:
+  otlp:
+    protocols:
+#      grpc:
+#        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+        auth:
+          authenticator: basicauth/server
+
+processors:
+  batch/traces:
+    send_batch_size: 512
+    send_batch_max_size: 5000
+    timeout: 60s
+  batch/metrics:
+    send_batch_size: 1024
+    send_batch_max_size: 3000
+    timeout: 60s
+  batch/logs:
+    send_batch_size: 128
+    send_batch_max_size: 2000
+    timeout: 60s
+
+exporters:
+  debug:
+    verbosity: detailed
+
+  otlphttp/grafana_cloud:
+#    endpoint: ${env:OTLP_GRAF_URL}
+    endpoint: ${env:MY_GRAF_URL}
+    auth:
+      authenticator: basicauth/grafana_cloud
+service:
+  extensions: [basicauth/grafana_cloud,basicauth/server]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch/traces]
+      exporters: [otlphttp/grafana_cloud]
+    metrics:
+      receivers: [otlp]
+      processors: [batch/metrics]
+      exporters: [otlphttp/grafana_cloud]
+    logs:
+      receivers: [otlp]
+      processors: [batch/logs]
+      exporters: [otlphttp/grafana_cloud]
