@@ -44,9 +44,9 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          cache-from: ||
+          cache-from: |
             registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: ||
+          cache-to: |
             registry,ref=ghcr.io/${{ github.repository }}:buildcache
             context: .
           file: ./Dockerfile
