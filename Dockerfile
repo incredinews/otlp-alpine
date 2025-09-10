@@ -1,4 +1,4 @@
-FROM otel/opentelemetry-collector-contrib AS prep
+FROM otel/opentelemetry-collector-contrib:nightly AS prep
 
 FROM alpine
 
