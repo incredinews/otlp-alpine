@@ -44,7 +44,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
+          cache-from: ||
+            registry,ref=ghcr.io/${{ github.repository }}:buildcache
+          cache-to: ||
+            registry,ref=ghcr.io/${{ github.repository }}:buildcache
+            context: .
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -61,6 +65,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
+          cache-from: ||
+            registry,ref=ghcr.io/${{ github.repository }}:buildcache
+          cache-to: ||
+            registry,ref=ghcr.io/${{ github.repository }}:buildcache
           context: .
           file: ./Dockerfile
           push: true
