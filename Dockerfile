@@ -9,6 +9,6 @@ RUN bash -c 'uname -m;cd /;test -e /etc/otelcol-contrib||mkdir /etc/otelcol-cont
 RUN mv wireproxy connector
 COPY --from=prep /otelcol-contrib /otelcol-contrib
 EXPOSE 4317 4318 55680 55679
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/ash"]
 #CMD ["-c","uname -m ; file /otelcol-contrib --config /etc/otel/config.yaml"]
 CMD ["-c" "uname -m ;/otelcol-contrib --config /etc/otelcol-contrib/config.yaml"]
