@@ -4,12 +4,12 @@ RUN apk add bash curl  && bash -c 'uname -m;cd /;test -e /etc/otelcol-contrib||m
 RUN ls /otelcol-contrib /connector
 
 FROM alpine
+RUN apk --update add ca-certificates bash curl file vnstat caddy  
 #ARG USER_UID=10001
 #ARG USER_GID=10001
 #USER ${USER_UID}:${USER_GID}
 COPY src/setup.sh src/caddyfile /etc
 COPY src/otlp-grafana.yaml /etc/otelcol-contrib/config.yaml
-RUN apk --update add ca-certificates bash curl file vnstat caddy  
 #COPY --from=prep /otelcol-contrib /otelcol-contrib
 COPY --from=prep /otelcol-contrib /connector /
 EXPOSE 4317 4318 55680 55679
