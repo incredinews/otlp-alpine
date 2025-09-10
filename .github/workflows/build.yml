@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - Dockerfile
-      - .github/workflows/docker-ghcr.yml
+      - .github/workflows/build.yml
       - src/**
 
 jobs:
