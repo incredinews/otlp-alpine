@@ -5,11 +5,10 @@ echo "$MYGRAF"|grep -q @ && MYGRAF=$(echo "$MYGRAF"|cut -d"@" -f2)
 cat /etc/caddyfile |sed 's/GRAFANAHOST/'"$MYGRAF"'/g' > /tmp/caddyfile
 
 export  MY_GRAF_URL="http://127.0.0.1:14444/"$(echo "$OTLP_GRAF_URL"|cut -d"/" -f4-)
-[[ "NOCADDY" == "true" ]] && export MY_GRAF_URL="$OTLP_GRAF_URL"
-[[ "NOCADDY" == "true" ]]  || (
+[[ "$NOCADDY" == "true" ]] && export MY_GRAF_URL="$OTLP_GRAF_URL"
+[[ "$NOCADDY" == "true" ]]  || (
   [[ "$DEBUG" == "true" ]] && ( sed 's/INFO/DEBUG/g'  -i /tmp//caddyfile ;[[ "$DEBUG" == "true" ]] && grep proxy /tmp/caddyfile;caddy run --config /tmp/caddyfile  ) &  #;caddy reload --config /tmp/caddyfile 
   [[ "$DEBUG" == "true" ]] || (                                           [[ "$DEBUG" == "true" ]] && grep proxy /tmp/caddyfile;caddy run --config /tmp/caddyfile  ) &  #;caddy reload --config /tmp/caddyfile 
-
 )
 [[ "$NOCADDY" == "true" ]] && (
 sed 's/14318/4318/g' -i /etc/otelcol-contrib/config.yaml
