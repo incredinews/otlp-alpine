@@ -60,3 +60,5 @@ service:
       receivers: [otlp]
       processors: [batch/logs]
       exporters: [otlphttp/grafana_cloud]
+# in deno
+##export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-domain.lan/ ;export OTEL_DENO=true;export OTEL_DENO_CONSOLE=replace;export OTEL_SERVICE_NAME=my-tst.service.lan;export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Basic "$(echo -n user:pass|base64 -w0)
