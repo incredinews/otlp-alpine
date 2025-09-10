@@ -48,7 +48,7 @@ jobs:
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
           cache-to: |
             type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-            context: .
+          context: .
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
