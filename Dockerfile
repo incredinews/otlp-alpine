@@ -1,5 +1,4 @@
 FROM otel/opentelemetry-collector-contrib:nightly AS prep
-
 FROM alpine
 
 #ARG USER_UID=10001
