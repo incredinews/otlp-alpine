@@ -8,7 +8,7 @@
 	respond /secret/* "Access denied" 403 {
 		close
 	}
-	respond /online "OK: ALIVE" 200 {
+	respond /is_online "OK: ALIVE" 200 {
 		close
 	}
     reverse_proxy http://127.0.0.1:14318 {
