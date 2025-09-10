@@ -5,12 +5,19 @@
     }
 }
 :4318 {
+	respond /secret/* "Access denied" 403 {
+		close
+	}
+	respond /online "OK: ALIVE" 200 {
+		close
+	}
     reverse_proxy http://127.0.0.1:14318 {
        header_up Host {http.reverse_proxy.upstream.hostport}
       header_up X-Real-IP {http.reverse-proxy.upstream.address}
       header_up X-Forwarded-Port {http.request.port}
     }
 }
+
 :14444 {
     reverse_proxy https://GRAFANAHOST {
        header_up Host {http.reverse_proxy.upstream.hostport}
