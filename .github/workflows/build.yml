@@ -64,7 +64,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: c8n.io/${{ secrets.REGISTRY_PROJECT }}/my-flask-app:main
+          tags: c8n.io/${{ secrets.REGISTRY_PROJECT }}/otlp-alpine
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
 #          platforms: linux/amd64,linux/arm64,linux/arm/v7
