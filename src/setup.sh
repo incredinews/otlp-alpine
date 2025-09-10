@@ -4,7 +4,7 @@ echo "$MYGRAF"|grep -q @ && MYGRAF=$(echo "$MYGRAF"|cut -d"@" -f2)
 
 cat /etc/caddyfile |sed 's/GRAFANAHOST/'"$MYGRAF"'/g' > /tmp/caddyfile
 
-[[ "$DEBUG" == "true" ]] && export MY_GRAF_URL="http://127.0.0.1:14444/"$(echo "$OTLP_GRAF_URL"|cut -d"/" -f4-)
+export  MY_GRAF_URL="http://127.0.0.1:14444/"$(echo "$OTLP_GRAF_URL"|cut -d"/" -f4-)
 [[ "NOCADDY" == "true" ]] && export MY_GRAF_URL="$OTLP_GRAF_URL"
 [[ "NOCADDY" == "true" ]]  || (
   [[ "$DEBUG" == "true" ]] && ( sed 's/INFO/DEBUG/g'  -i /tmp//caddyfile ;[[ "$DEBUG" == "true" ]] && grep proxy /tmp/caddyfile;caddy run --config /tmp/caddyfile  ) &  #;caddy reload --config /tmp/caddyfile 
