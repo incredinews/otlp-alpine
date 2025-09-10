@@ -65,9 +65,9 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          cache-from: ||
+          cache-from: |
             registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: ||
+          cache-to: |
             registry,ref=ghcr.io/${{ github.repository }}:buildcache
           context: .
           file: ./Dockerfile
@@ -76,3 +76,30 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
 #          platforms: linux/amd64,linux/arm64,linux/arm/v7
+
+      - name: Sleep for few seconds
+        run: sleep 10
+        shell: bash
+      - uses: actions/delete-package-versions@v4
+        name: delete non-build containers
+        with: 
+          package-name: "${{ github.event.repository.name }}"
+          package-type: 'container'
+          min-versions-to-keep: 4
+          delete-only-untagged-versions: 'true'
+          ignore-versions: '.*(buildcache|baseimage|builder)(|.*)'
+          #token: ${{ secrets.PACKAGE_TOKEN }}
+          token: ${{ github.token }}
+  del_runs:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 1
